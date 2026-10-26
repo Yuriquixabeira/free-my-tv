@@ -1,0 +1,26 @@
+name: Build
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Config
+        run: |
+          cat > config.properties <<EOF
+          tmdb_key=63ddcf87314993aae40948bfe3603fc3
+          city=São Sebastião da Bela Vista
+          latitude=-22.15
+          longitude=-45.75
+          tmdb_region=BR
+          currency=BRL
+          EOF
+      - run: chmod +x build.sh && ./build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FreeMyTV
+          path: FreeMyTV.apk
